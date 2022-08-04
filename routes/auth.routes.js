@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
+const UserInfo = require("../models/UserInfo.model");
 
 const router = express.Router();
 const saltRounds = 10;
@@ -124,6 +125,40 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
 	// Send back the object with user data
 	// previously set as the token payload
 	res.status(200).json(req.payload);
+});
+
+router.post("/userInfo", (req, res, next) => {
+	const {
+		name,
+		mailingStreetAddress,
+		mailingCity,
+		mailingState,
+		mailingZipCode,
+		cardHolder,
+		cardNumber,
+		cvvNum,
+		billingStreetAddress,
+		billingCity,
+		billingState,
+		billingZip,
+	} = req.body;
+	console.log(req.body);
+	UserInfo.create({
+		name,
+		mailingStreetAddress,
+		mailingCity,
+		mailingState,
+		mailingZipCode,
+		cardHolder,
+		cardNumber,
+		cvvNum,
+		billingStreetAddress,
+		billingCity,
+		billingState,
+		billingZip,
+	})
+		.then(() => console.log("success"))
+		.catch((err) => console.log(err));
 });
 
 module.exports = router;
